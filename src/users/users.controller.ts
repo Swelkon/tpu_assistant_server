@@ -1,16 +1,11 @@
-import {Controller, Get, Param, Post, Query, Res} from "@nestjs/common";
-import {UserResponse, UsersService} from "./users.service";
-import {response} from "express";
+import {Controller, Get, Param, Post, Query, Req, Res} from "@nestjs/common";
+import {UsersService} from "./users.service";
+import {ServerResponse} from "../model/ServerResponse";
 
 @Controller('users')
 export class UsersController{
 
     constructor( private readonly usersService: UsersService) {
-    }
-
-    @Get('')
-    helloUser(){
-        return("helloUser")
     }
 
     @Get('register')
@@ -19,7 +14,7 @@ export class UsersController{
     }
 
     @Post('authorize/:chat_id')
-    async authorize(@Param('chat_id') chat_id): Promise<UserResponse>{
+    async authorize(@Param('chat_id') chat_id): Promise<ServerResponse<any>>{
         const response = await this.usersService.authorizeUser(chat_id)
         return response
     }

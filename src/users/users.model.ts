@@ -22,6 +22,9 @@ export class User {
 
     @Prop({required: true})
     telegram_chat_id: number;
+
+    @Prop({required: true})
+    access_token: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
