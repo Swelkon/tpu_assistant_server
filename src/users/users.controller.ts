@@ -9,13 +9,16 @@ export class UsersController{
     }
 
     @Get('register')
-    async register(@Query('code') code, @Query('state') state, @Res() res){
-        await this.usersService.registerUser(code, state, res)
+    async register(@Query('code') code, @Query('state') state, @Res() res): Promise<ServerResponse<any>>{
+        const response = await this.usersService.registerUser(code, state, res)
+        console.log("EndPoint: register\nServerResponse:", response)
+        return response
     }
 
-    @Post('authorize/:chat_id')
-    async authorize(@Param('chat_id') chat_id): Promise<ServerResponse<any>>{
-        const response = await this.usersService.authorizeUser(chat_id)
+    @Get('authorize')
+    async authorize(@Query('chat_id') chat_id, @Query('access_token') access_token): Promise<ServerResponse<any>>{
+        const response = await this.usersService.authorizeUser(chat_id, access_token)
+        console.log("EndPoint: authorize\nServerResponse:", response)
         return response
     }
 

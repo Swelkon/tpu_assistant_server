@@ -1,0 +1,48 @@
+import {HttpService} from "@nestjs/axios";
+
+require('dotenv/config')
+
+export class ApiTPU {
+
+    private httpService: HttpService;
+    private CLIENT_ID = process.env.CLIENT_ID;
+    private CLIENT_SECRET = process.env.CLIENT_SECRET;
+    private REDIRECT_URL = process.env.REDIRECT_URL;
+    private API_KEY = process.env.API_KEY;
+
+    constructor(httpService: HttpService) {
+        this.httpService = httpService;
+    }
+
+    public async getUserTPU(code: string): Promise<[any, string]>{
+
+        try {
+            // Get access_token from https://oauth.tpu.ru/access_token
+            const accessTokenObservable = await this.httpService.get(`https://oauth.tpu.ru/access_token?client_id=${this.CLIENT_ID}&client_secret=${this.CLIENT_SECRET}&redirect_uri=${this.REDIRECT_URL}&code=${code}&grant_type=authorization_code`);
+            const response = await accessTokenObservable.toPromise();
+
+            const access_token = response.data.access_token;
+
+            // Get user data from https://api.tpu.ru/v2/auth/user
+            const userObservable = await this.httpService.get(`https://api.tpu.ru/v2/auth/user?access_token=${access_token}&apiKey=${this.API_KEY}`);
+            const userResponse = await userObservable.toPromise()
+            const user = userResponse.data;
+
+            return [user, access_token]
+
+        } catch (e) {
+            console.log(e)
+            return [null, null]
+        }
+    }
+
+}
+
+
+
+// // Get user data from https://api.tpu.ru/v2/auth/user
+// const userFullObservable = await this.httpService.get(`https://api.tpu.ru/v2/users/bbc7?access_token=${access_token}&apiKey=${api_key}`);
+// const userFullResponse = await userFullObservable.toPromise()
+// const userFull = userFullResponse.data;
+//
+// console.log(userFull)
