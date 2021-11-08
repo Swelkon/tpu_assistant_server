@@ -5,9 +5,15 @@ import {MongooseModule} from '@nestjs/mongoose';
 import {mongooseConfig} from './config/mongoose.config';
 import {UsersModule} from "./users/users.module";
 import {ServerResponse} from "./model/ServerResponse";
+import { QuestionsModule } from './questions/questions.module';
 
 @Module({
-    imports: [MongooseModule.forRootAsync(mongooseConfig), UsersModule, ServerResponse],
+    imports: [
+        MongooseModule.forRootAsync(mongooseConfig),
+        UsersModule,
+        ServerResponse,
+        QuestionsModule,
+    ],
     controllers: [AppController],
     providers: [AppService],
 })
