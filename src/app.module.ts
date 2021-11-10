@@ -7,7 +7,8 @@ import {UsersModule} from "./users/users.module";
 import {ServerResponse} from "./model/ServerResponse";
 
 @Module({
-    imports: [MongooseModule.forRootAsync(mongooseConfig), UsersModule, ServerResponse],
+    // imports: [MongooseModule.forRootAsync(mongooseConfig), UsersModule, ServerResponse],
+    imports: [MongooseModule.forRootAsync(mongooseConfig), UsersModule],
     controllers: [AppController],
     providers: [AppService],
 })

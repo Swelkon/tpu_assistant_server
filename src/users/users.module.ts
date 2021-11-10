@@ -4,6 +4,7 @@ import {User, UserSchema} from "../model/data/users.model";
 import {UsersController} from "./users.controller";
 import {UsersService} from "./users.service";
 import {HttpModule} from "@nestjs/axios";
+import {UsersRepository} from "./users.repository";
 
 @Module({
     imports: [
@@ -11,6 +12,6 @@ import {HttpModule} from "@nestjs/axios";
         HttpModule
     ],
     controllers: [UsersController],
-    providers: [UsersService],
+    providers: [UsersService, UsersRepository],
 })
 export class UsersModule{}

@@ -5,8 +5,7 @@ import {ServerResponse} from "../model/ServerResponse";
 @Controller('users')
 export class UsersController{
 
-    constructor( private readonly usersService: UsersService) {
-    }
+    constructor( private readonly usersService: UsersService) { }
 
     @Get('register')
     async register(@Query('code') code, @Query('state') state, @Res() res): Promise<ServerResponse<any>>{

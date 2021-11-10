@@ -5,6 +5,7 @@ import {User, UserDocument} from "../model/data/users.model";
 import {HttpService} from "@nestjs/axios";
 import {ServerResponse} from "../model/ServerResponse";
 import {ApiTPU} from "../TPUApi/ApiTPU";
+import {UsersRepository} from "./users.repository";
 
 require('dotenv/config')
 
@@ -13,6 +14,7 @@ export class UsersService {
     private apiTPU: ApiTPU
 
     constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+                private usersRepository: UsersRepository,
                 private httpService: HttpService) {
         this.apiTPU = new ApiTPU(httpService);
     }
@@ -37,11 +39,11 @@ export class UsersService {
         let response: any
 
         // Check if there is a record with telegram_chat_id == state
-        if (await this.findUserByChatId(state)) {
-            const updatedUser = await this.updateUser(state, access_token, user)
-            response = updatedUser ? ServerResponse.sendSuccessfulUpdate() : ServerResponse.sendServerError(updatedUser)
+        if (await this.usersRepository.findUserByChatId(state)) {
+            const updatedUserAcknowledged = await this.usersRepository.updateUser(state, access_token, user)
+            response = updatedUserAcknowledged ? ServerResponse.sendSuccessfulUpdate() : ServerResponse.sendServerError(updatedUserAcknowledged)
         } else {
-            const savedUser = this.saveUser(state, access_token, user)
+            const savedUser = this.usersRepository.saveUser(state, access_token, user)
             response = savedUser ? ServerResponse.sendSuccessfulRegistration() : ServerResponse.sendServerError(savedUser)
         }
 
@@ -56,25 +58,7 @@ export class UsersService {
 
     async authorizeUser(chat_id: number, access_token: string) {
         try {
-            const user = await this.userModel.findOne(
-                {
-                    $and: [
-                        {
-                            telegram_chat_id: chat_id
-                        }, {
-                            access_token: access_token
-                        }
-                    ]
-                },
-                {
-                    '_id': 0,
-                    'first_name': 1,
-                    'last_name': 1,
-                    'email': 1,
-                    'telegram_chat_id': 1,
-                }
-            )
-                .exec()
+            const user = await this.usersRepository.authorizeUser(chat_id, access_token)
 
             return user == null
                 ? ServerResponse.sendUserNotFount()
@@ -84,61 +68,5 @@ export class UsersService {
         }
 
     }
-
-    async findUserByChatId(chat_id: number) {
-        try {
-            const user = await this.userModel.findOne({telegram_chat_id: chat_id}, {
-                    '_id': 0,
-                    'telegram_chat_id': 1,
-                }
-            )
-                .exec()
-
-            return user
-        } catch (e) {
-            console.log(e)
-            return null
-        }
-    }
-
-    async saveUser(chat_id: number, access_token: string, user) {
-        const newUser = new this.userModel({
-            user_id: user.user_id,
-            lichnost_id: user.lichnost_id,
-            email: user.email,
-            first_name: user.lichnost.imya,
-            last_name: user.lichnost.familiya,
-            telegram_chat_id: chat_id,
-            access_token: access_token
-        });
-
-        const result = await newUser.save();
-        console.log(result)
-    }
-
-    async updateUser(chat_id: number, access_token: string, user) {
-        try {
-            const updatedUser = await this.userModel.updateOne({
-                    telegram_chat_id: chat_id
-                },
-                {
-                    $set: {
-                        user_id: user.user_id,
-                        lichnost_id: user.lichnost_id,
-                        email: user.email,
-                        first_name: user.lichnost.imya,
-                        last_name: user.lichnost.familiya,
-                        telegram_chat_id: chat_id,
-                        access_token: access_token
-                    }
-                }).exec()
-
-            return updatedUser
-
-        } catch (e) {
-            return null
-        }
-    }
-
 
 }
