@@ -1,6 +1,6 @@
 import {HttpService} from "@nestjs/axios";
 
-require('dotenv/config')
+// require('dotenv/config')
 
 export class ApiTPU {
 

@@ -4,11 +4,19 @@ import {AppService} from './app.service';
 import {MongooseModule} from '@nestjs/mongoose';
 import {mongooseConfig} from './config/mongoose.config';
 import {UsersModule} from "./users/users.module";
-import {ServerResponse} from "./model/ServerResponse";
+import {ConfigModule} from "@nestjs/config";
+import {ChannelPostsModule} from "./channels/channel.posts.module";
 
 @Module({
     // imports: [MongooseModule.forRootAsync(mongooseConfig), UsersModule, ServerResponse],
-    imports: [MongooseModule.forRootAsync(mongooseConfig), UsersModule],
+    imports: [
+        // ConfigModule.forRoot({
+        //     isGlobal: true
+        // }),
+        MongooseModule.forRootAsync(mongooseConfig),
+        UsersModule,
+        ChannelPostsModule
+    ],
     controllers: [AppController],
     providers: [AppService],
 })

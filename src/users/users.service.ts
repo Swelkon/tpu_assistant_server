@@ -1,7 +1,4 @@
 import {Injectable} from "@nestjs/common";
-import {InjectModel} from "@nestjs/mongoose";
-import {Model} from "mongoose";
-import {User, UserDocument} from "../model/data/users.model";
 import {HttpService} from "@nestjs/axios";
 import {ServerResponse} from "../model/ServerResponse";
 import {ApiTPU} from "../TPUApi/ApiTPU";
@@ -13,7 +10,7 @@ require('dotenv/config')
 export class UsersService {
     private apiTPU: ApiTPU
 
-    constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    constructor(
                 private usersRepository: UsersRepository,
                 private httpService: HttpService) {
         this.apiTPU = new ApiTPU(httpService);
