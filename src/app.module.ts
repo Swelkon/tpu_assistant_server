@@ -6,6 +6,7 @@ import {mongooseConfig} from './config/mongoose.config';
 import {UsersModule} from "./users/users.module";
 import {ConfigModule} from "@nestjs/config";
 import {ChannelPostsModule} from "./channels/channel.posts.module";
+import { QuestionsModule } from './questions/questions.module';
 
 @Module({
     // imports: [MongooseModule.forRootAsync(mongooseConfig), UsersModule, ServerResponse],
@@ -15,10 +16,10 @@ import {ChannelPostsModule} from "./channels/channel.posts.module";
         // }),
         MongooseModule.forRootAsync(mongooseConfig),
         UsersModule,
-        ChannelPostsModule
+        ChannelPostsModule,
+        QuestionsModule
     ],
     controllers: [AppController],
     providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}
