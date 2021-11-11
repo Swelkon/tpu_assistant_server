@@ -1,4 +1,4 @@
-import {Injectable} from "@nestjs/common";
+import {Injectable, ValidationError} from "@nestjs/common";
 import {ChannelPostDto} from "../model/data/dtos/ChannelPost.dto";
 import {ChannelPostsRepository} from "./channel.posts.repository";
 import {ServerResponse} from "../model/ServerResponse";
@@ -15,14 +15,21 @@ export class ChannelPostsService{
         if (!channelPostDto){
             return ServerResponse.sendBodyNotProvided()
         }
+        
+        try{
+            const savedPost = await this.channelPostsRepository.createChannelPost(channelPostDto)
+            if (savedPost) {
+                const savedPostDto = new ChannelPostDto(savedPost.from_chat_id, savedPost.message_id, savedPost.date, savedPost.is_poll)
+                return ServerResponse.sendPostCreated(savedPostDto)
+            } else {
+                return ServerResponse.sendPostFailed()
+            }
 
-        const savedPost = await this.channelPostsRepository.createChannelPost(channelPostDto)
-        if (savedPost){
-            const savedPostDto = new ChannelPostDto(savedPost.from_chat_id, savedPost.message_id, savedPost.date, savedPost.is_poll)
-            return ServerResponse.sendPostCreated(savedPostDto)
-        } else {
-            return ServerResponse.sendPostFailed()
+        }catch (e) {
+            console.log(e)
+            return ServerResponse.sendServerError(e)
         }
+
     }
 
     async getChannelPosts() {
