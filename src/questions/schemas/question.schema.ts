@@ -15,6 +15,9 @@ export class Question {
 
     @Prop({ type: String, required: true })
     recepient: string
+
+    @Prop({ type: Number, required: false })
+    createdAt: number
 }
 
 export const QuestionSchema = SchemaFactory.createForClass(Question)
