@@ -1,7 +1,7 @@
 import {
   MongooseModuleAsyncOptions,
 } from '@nestjs/mongoose';
-// require('dotenv/config')
+require('dotenv/config')
 
 export const mongooseConfig: MongooseModuleAsyncOptions = {
   useFactory: () => ({

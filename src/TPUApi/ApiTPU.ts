@@ -1,4 +1,5 @@
 import {HttpService} from "@nestjs/axios";
+import {UserTpuDto} from "../model/data/dtos/user.tpu.dto";
 
 // require('dotenv/config')
 
@@ -14,7 +15,7 @@ export class ApiTPU {
         this.httpService = httpService;
     }
 
-    public async getUserTPU(code: string): Promise<[any, string]>{
+    public async getUserTPU(code: string): Promise<UserTpuDto>{
 
         try {
             // Get access_token from https://oauth.tpu.ru/access_token
@@ -28,11 +29,18 @@ export class ApiTPU {
             const userResponse = await userObservable.toPromise()
             const user = userResponse.data;
 
-            return [user, access_token]
+            // Get user data from https://api.tpu.ru/v2/student/info
+            const userInfoObservable = await this.httpService.get(`https://api.tpu.ru/v2/student/info?access_token=${access_token}&apiKey=${this.API_KEY}`)
+            const userInfoResponse = await userInfoObservable.toPromise()
+            const userInfo = userInfoResponse.data
+
+            console.log("APITPU user info: ", userInfo["studies"])
+
+            return new UserTpuDto(user, userInfo, access_token)
 
         } catch (e) {
             console.log(e)
-            return [null, null]
+            return null
         }
     }
 
