@@ -6,6 +6,7 @@ export class ServerResponse<T>{
     static STATUS_OK = 0
     static STATUS_PARAMS_NOT_GIVEN = 1
     static STATUS_USER_NOT_FOUND = 2
+    static STATUS_RASP_NOT_FOUND = 3
     static STATUS_SERVER_ERROR = 10
 
     constructor(
@@ -65,5 +66,13 @@ export class ServerResponse<T>{
 
     public static sendPollsRetrieved(polls){
         return new ServerResponse(ServerResponse.STATUS_OK, "Polls have been retrieved", polls)
+    }
+
+    public static sendRaspSuccess(lessons){
+        return new ServerResponse(ServerResponse.STATUS_OK, "Retrieved tiimetable", lessons)
+    }
+
+    public static sendRaspFail(){
+        return new ServerResponse(ServerResponse.STATUS_RASP_NOT_FOUND, "Could not retrieve timetable ", null)
     }
 }

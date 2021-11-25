@@ -44,6 +44,21 @@ export class ApiTPU {
         }
     }
 
+    public async getTimetableTPU(access_token: string) {
+        try {
+
+            const timetableObservable = await this.httpService.get(`https://api.tpu.ru/v2/rasp/event?access_token=${access_token}&apiKey=${this.API_KEY}`)
+            const timetableResponse = await timetableObservable.toPromise()
+            const timetable = timetableResponse.data
+
+            return timetable
+
+        } catch (e) {
+            console.log(e)
+            return null
+        }
+    }
+
 }
 
 
