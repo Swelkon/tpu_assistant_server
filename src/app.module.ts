@@ -8,6 +8,7 @@ import {ConfigModule} from "@nestjs/config";
 import {ChannelPostsModule} from "./channels/channel.posts.module";
 import { QuestionsModule } from './questions/questions.module';
 import {RaspModule} from "./rasp/rasp.module";
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     // imports: [MongooseModule.forRootAsync(mongooseConfig), UsersModule, ServerResponse],
@@ -19,7 +20,8 @@ import {RaspModule} from "./rasp/rasp.module";
         UsersModule,
         ChannelPostsModule,
         QuestionsModule,
-        RaspModule
+        RaspModule,
+        AuthModule
     ],
     controllers: [AppController],
     providers: [AppService],

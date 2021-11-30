@@ -22,6 +22,7 @@ export class ApiTPU {
             const accessTokenObservable = await this.httpService.get(`https://oauth.tpu.ru/access_token?client_id=${this.CLIENT_ID}&client_secret=${this.CLIENT_SECRET}&redirect_uri=${this.REDIRECT_URL}&code=${code}&grant_type=authorization_code`);
             const response = await accessTokenObservable.toPromise();
 
+            console.log(response.data)
             const access_token = response.data.access_token;
 
             // Get user data from https://api.tpu.ru/v2/auth/user
