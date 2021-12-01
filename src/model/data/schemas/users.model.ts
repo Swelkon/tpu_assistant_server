@@ -38,8 +38,20 @@ export class User {
     @Prop({required: true})
     type_of_financing: string;
 
+    // tpu access_taken
     @Prop({required: true})
     access_token: string;
+
+    // tpu refresh_token
+    @Prop({required: true})
+    refresh_token: string;
+
+    // custom token
+    @Prop({required: true})
+    telegram_token: string;
+
+    @Prop({required: true})
+    telegram_token_expiration_date: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

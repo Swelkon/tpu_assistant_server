@@ -24,6 +24,7 @@ export class ApiTPU {
 
             console.log(response.data)
             const access_token = response.data.access_token;
+            const refresh_token = response.data.refresh_token;
 
             // Get user data from https://api.tpu.ru/v2/auth/user
             const userObservable = await this.httpService.get(`https://api.tpu.ru/v2/auth/user?access_token=${access_token}&apiKey=${this.API_KEY}`);
@@ -35,9 +36,12 @@ export class ApiTPU {
             const userInfoResponse = await userInfoObservable.toPromise()
             const userInfo = userInfoResponse.data
 
-            console.log("APITPU user info: ", userInfo["studies"])
+            if (userInfo.code == 200){
+                console.log("APITPU user info: ", userInfo["studies"])
+                return new UserTpuDto(user, userInfo, access_token, refresh_token)
+            }
 
-            return new UserTpuDto(user, userInfo, access_token)
+            return null
 
         } catch (e) {
             console.log(e)
@@ -45,14 +49,26 @@ export class ApiTPU {
         }
     }
 
-    public async getTimetableTPU(access_token: string) {
+    public async getTimetableTPU(access_token: string, refresh_token: string) {
         try {
+            const renewTokenObservable = await this.httpService.put(`https://api.tpu.ru/v2/auth/token?apiKey=${this.API_KEY}&access_token=${access_token}&refresh_token=${refresh_token}`)
+            const renewTokenResponse = await renewTokenObservable.toPromise()
+            const renewToken = renewTokenResponse.data
 
-            const timetableObservable = await this.httpService.get(`https://api.tpu.ru/v2/rasp/event?access_token=${access_token}&apiKey=${this.API_KEY}`)
-            const timetableResponse = await timetableObservable.toPromise()
-            const timetable = timetableResponse.data
+            if (renewToken.code == 200){
+                const newAccessToken = renewToken.body.token
+                const newRefreshToken = renewToken.body.refresh_token
+                const timetableObservable = await this.httpService.get(`https://api.tpu.ru/v2/rasp/event?access_token=${access_token}&apiKey=${this.API_KEY}`)
+                const timetableResponse = await timetableObservable.toPromise()
+                const timetable = timetableResponse.data
+                return {
+                    timetable: timetable,
+                    new_access_token: newAccessToken,
+                    new_refresh_token: newRefreshToken
+                }
+            }
 
-            return timetable
+            return null
 
         } catch (e) {
             console.log(e)
