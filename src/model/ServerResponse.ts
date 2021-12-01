@@ -6,6 +6,7 @@ export class ServerResponse<T>{
     static STATUS_OK = 0
     static STATUS_PARAMS_NOT_GIVEN = 1
     static STATUS_USER_NOT_FOUND = 2
+    static STATUS_AUTH_NEEDED = 401
     static STATUS_RASP_NOT_FOUND = 3
     static STATUS_SERVER_ERROR = 10
 
@@ -38,6 +39,10 @@ export class ServerResponse<T>{
 
     public static sendUserNotFromTPU(){
         return new ServerResponse(ServerResponse.STATUS_USER_NOT_FOUND, "User is not from TPU", null)
+    }
+
+    public static sendAuthIsNeeded(){
+        return new ServerResponse(ServerResponse.STATUS_USER_NOT_FOUND, "Unauthorized via TPU", null)
     }
 
     public static sendServerError(e){

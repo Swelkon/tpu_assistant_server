@@ -6,14 +6,17 @@ export class AuthService {
 
     constructor( private usersService: UsersService) {}
 
-    async validateUser(username: string, pass: string): Promise<any>{
-        // const user = await this.usersService.findOne(username);
-        // if (user && user.password == pass) {
-        //     const { password, ...result } = user
-        //     return result
-        // }
-        //
-        // return null
+    async validateUser(telegram_chat_id: number, telegram_token: string): Promise<any>{
+        const user = await this.usersService.findUserByChatId(telegram_chat_id);
+        if (user && user.telegram_token == telegram_token && new Date() < user.telegram_token_expiration_date) {
+            const result = {
+                _id: user._id,
+                telegram_chat_id: user.telegram_chat_id,
+            }
+            return result
+        }
+
+        return null
     }
 
 }

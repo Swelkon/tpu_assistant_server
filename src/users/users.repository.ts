@@ -10,7 +10,9 @@ export class UsersRepository{
 
     constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>) { }
 
-    async saveUser(chat_id: number, access_token: string, user_auth: GetUserAuthTpuDto, user_info: UserInfoTpu) {
+    async saveUser(chat_id: number, access_token: string, refresh_token: string,
+                   telegram_token: string, expiration: Date,
+                   user_auth: GetUserAuthTpuDto, user_info: UserInfoTpu) {
         console.log()
         const newUser = new this.userModel({
             user_id: user_auth.user_id,
@@ -24,7 +26,10 @@ export class UsersRepository{
             direction_of_training: user_info.direction_of_training,
             form_of_education: user_info.form_of_education,
             type_of_financing: user_info.type_of_financing,
-            access_token: access_token
+            access_token: access_token,
+            refresh_token: refresh_token,
+            telegram_token: telegram_token,
+            telegram_token_expiration_date: expiration
         });
 
         const result = await newUser.save();
@@ -32,16 +37,10 @@ export class UsersRepository{
         return result
     }
 
-    async authorizeUser(chat_id: number, access_token: string) {
+    async authorizeUser(_id) {
         const user = await this.userModel.findOne(
             {
-                $and: [
-                    {
-                        telegram_chat_id: chat_id
-                    }, {
-                        access_token: access_token
-                    }
-                ]
+                _id: _id
             },
             {
                 '_id': 0,
@@ -61,13 +60,14 @@ export class UsersRepository{
 
         console.log(`UsersRepository: authorizeUser()\n${user}`)
         return user
-
     }
 
     async findUserByChatId(chat_id: number) {
         const user = await this.userModel.findOne({telegram_chat_id: chat_id}, {
-                '_id': 0,
+                '_id': 1,
                 'telegram_chat_id': 1,
+                'telegram_token': 1,
+                'telegram_token_expiration_date': 1,
             }
         )
             .exec()
@@ -76,8 +76,26 @@ export class UsersRepository{
         return user
     }
 
+    async findTpuTokens(_id){
+        const query = await this.userModel.findOne(
+            {
+                _id: _id
+            },
+            {
+                '_id': 1,
+                'access_token': 1,
+                'refresh_token': 1
+            }
+        )
+            .exec()
 
-    async updateUser(chat_id: number, access_token: string, user_auth: GetUserAuthTpuDto, user_info: UserInfoTpu) {
+        return query
+    }
+
+
+    async updateUser(chat_id: number, access_token: string, refresh_token: string,
+                     telegram_token: string, expiration: Date,
+                     user_auth: GetUserAuthTpuDto, user_info: UserInfoTpu) {
         const updatedUser = await this.userModel.updateOne({
                 telegram_chat_id: chat_id
             },
@@ -94,12 +112,30 @@ export class UsersRepository{
                     direction_of_training: user_info.direction_of_training,
                     form_of_education: user_info.form_of_education,
                     type_of_financing: user_info.type_of_financing,
-                    access_token: access_token
+                    access_token: access_token,
+                    refresh_token: refresh_token,
+                    telegram_token: telegram_token,
+                    telegram_token_expiration_date: expiration
                 }
             }).exec()
 
 
-        console.log(`UsersRepository: updateUser()\n${updatedUser.acknowledged}`)
+        console.log(`UsersRepository: updateUser(): ${updatedUser.acknowledged}`)
         return updatedUser.acknowledged
+    }
+
+    async updateTpuTokens(_id, access_token, refresh_token) {
+        const query = await this.userModel.updateOne({
+            _id: _id
+        },
+            {
+                $set: {
+                    access_token: access_token,
+                    refresh_token: refresh_token
+                }
+            }).exec()
+
+        console.log(`UsersRepository: updateTpuTokens(): ${query.acknowledged}`)
+        return query.acknowledged
     }
 }
