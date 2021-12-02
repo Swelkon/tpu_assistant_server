@@ -1,5 +1,5 @@
 import {Body, Controller, Get, Post} from "@nestjs/common";
-import {ChannelPostDto} from "../model/data/dtos/ChannelPost.dto";
+import {ChannelPostDto} from "./dtos/channel.post.dto";
 import {ChannelPostsService} from "./channel.posts.service";
 import {ServerResponse} from "../model/ServerResponse";
 

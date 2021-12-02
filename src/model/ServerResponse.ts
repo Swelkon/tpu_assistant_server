@@ -1,5 +1,5 @@
-import {User} from "./data/schemas/users.model";
-import {ChannelPostDto} from "./data/dtos/ChannelPost.dto";
+import {User} from "../users/schemas/users.model";
+import {ChannelPostDto} from "../channels/dtos/channel.post.dto";
 
 
 export class ServerResponse<T>{

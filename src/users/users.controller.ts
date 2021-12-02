@@ -21,13 +21,25 @@ export class UsersController{
     async authorize(@Request() req): Promise<any>{
         const user = req.user
         if (user){
-            console.log("user embedded to req: ", user)
             const response = await this.usersService.authorizeUser(user._id)
             console.log("EndPoint: authorize\nServerResponse:", response)
             return response
         }
-        return { message: "Unauthorized, need to login"}
+        return ServerResponse.sendAuthIsNeeded()
     }
+
+
+    // @UseGuards(AuthGuard('local'))
+    // @Post('telegram')
+    // async getTelegramChatIds (@Request() req){
+    //     const user = req.user
+    //     if (user){
+    //         const response = await this.usersService.getTelegramChatIds()
+    //         console.log("EndPoint: telegram\nServerResponse:", response)
+    //         return response
+    //     }
+    //     return ServerResponse.sendAuthIsNeeded()
+    // }
 
 
 

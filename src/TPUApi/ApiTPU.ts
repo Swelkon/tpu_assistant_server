@@ -1,5 +1,5 @@
 import {HttpService} from "@nestjs/axios";
-import {UserTpuDto} from "../model/data/dtos/user.tpu.dto";
+import {UserTpuDto} from "../users/dtos/user.tpu.dto";
 
 // require('dotenv/config')
 
@@ -61,6 +61,11 @@ export class ApiTPU {
                 const timetableObservable = await this.httpService.get(`https://api.tpu.ru/v2/rasp/event?access_token=${access_token}&apiKey=${this.API_KEY}`)
                 const timetableResponse = await timetableObservable.toPromise()
                 const timetable = timetableResponse.data
+
+                if(timetable.code !== 200){
+                    return null
+                }
+
                 return {
                     timetable: timetable,
                     new_access_token: newAccessToken,

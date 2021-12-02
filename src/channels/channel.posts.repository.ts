@@ -1,8 +1,8 @@
 import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
-import {ChannelPost, ChannelPostDocument} from "../model/data/schemas/channel.post.model";
-import {ChannelPostDto} from "../model/data/dtos/ChannelPost.dto";
+import {ChannelPost, ChannelPostDocument} from "./schemas/channel.post.model";
+import {ChannelPostDto} from "./dtos/channel.post.dto";
 
 
 @Injectable()

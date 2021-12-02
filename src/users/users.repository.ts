@@ -1,9 +1,9 @@
 import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
-import {User, UserDocument} from "../model/data/schemas/users.model";
+import {User, UserDocument} from "./schemas/users.model";
 import {Model} from "mongoose";
-import {GetUserAuthTpuDto} from "../model/data/dtos/get-user.auth.tpu.dto";
-import {UserInfoTpu} from "../model/data/dtos/get-user.info.tpu.dto";
+import {GetUserAuthTpuDto} from "./dtos/get-user.auth.tpu.dto";
+import {UserInfoTpu} from "./dtos/get-user.info.tpu.dto";
 
 Injectable()
 export class UsersRepository{
@@ -138,4 +138,8 @@ export class UsersRepository{
         console.log(`UsersRepository: updateTpuTokens(): ${query.acknowledged}`)
         return query.acknowledged
     }
+
+    // async getTelegramChatIds() {
+    //
+    // }
 }

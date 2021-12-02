@@ -1,5 +1,5 @@
 import {Injectable, ValidationError} from "@nestjs/common";
-import {ChannelPostDto} from "../model/data/dtos/ChannelPost.dto";
+import {ChannelPostDto} from "./dtos/channel.post.dto";
 import {ChannelPostsRepository} from "./channel.posts.repository";
 import {ServerResponse} from "../model/ServerResponse";
 
