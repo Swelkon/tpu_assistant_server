@@ -42,7 +42,7 @@ export class ServerResponse<T>{
     }
 
     public static sendAuthIsNeeded(){
-        return new ServerResponse(ServerResponse.STATUS_USER_NOT_FOUND, "Unauthorized via TPU", null)
+        return new ServerResponse(ServerResponse.STATUS_AUTH_NEEDED, "Unauthorized via TPU", null)
     }
 
     public static sendServerError(e){
@@ -79,5 +79,12 @@ export class ServerResponse<T>{
 
     public static sendRaspFail(){
         return new ServerResponse(ServerResponse.STATUS_RASP_NOT_FOUND, "Could not retrieve timetable ", null)
+    }
+
+    public static sendTelegramIds(telegramChatIds){
+        return new ServerResponse(ServerResponse.STATUS_OK, "Telegram chat ids retrieved successfully", telegramChatIds)
+    }
+    public static sendCouldNotRetrieveTelegramIds(){
+        return new ServerResponse(ServerResponse.STATUS_OK, "Telegram chat ids not retrieved", null)
     }
 }

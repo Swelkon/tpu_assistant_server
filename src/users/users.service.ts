@@ -76,6 +76,21 @@ export class UsersService {
 
     }
 
+    async getTelegramChatIds() {
+        try{
+            const chatIds = await this.usersRepository.getTelegramChatIds()
+
+            if (chatIds){
+                return ServerResponse.sendTelegramIds(chatIds)
+            }
+
+            return ServerResponse.sendCouldNotRetrieveTelegramIds()
+
+        } catch (e) {
+            return ServerResponse.sendServerError(e)
+        }
+    }
+
     async findUserByChatId(telegram_chat_id: number) {
         return await this.usersRepository.findUserByChatId(telegram_chat_id)
     }
@@ -87,8 +102,4 @@ export class UsersService {
     async updateTpuTokens(user_id, access_token, refresh_token){
         return await this.usersRepository.updateTpuTokens(user_id, access_token, refresh_token)
     }
-    //
-    // async getTelegramChatIds() {
-    //     const chatIds = await this.usersRepository.getTelegramChatIds()
-    // }
 }

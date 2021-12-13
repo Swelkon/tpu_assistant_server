@@ -5,7 +5,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // const globalPrefix = 'api';
   // app.setGlobalPrefix(globalPrefix);
-  var whitelist = ['https://t.me', 'https://www.website.com'];
+  // var whitelist = ['https://t.me', 'https://www.website.com', 'http://85.143.78.60'];
   // app.enableCors({
   //   // origin: "https://t.me/tpu_assistant_bot",
   //   origin: function (origin, callback) {

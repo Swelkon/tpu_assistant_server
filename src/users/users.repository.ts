@@ -139,7 +139,12 @@ export class UsersRepository{
         return query.acknowledged
     }
 
-    // async getTelegramChatIds() {
-    //
-    // }
+    async getTelegramChatIds() {
+        const chatIds = await this.userModel.find({}, {
+            _id: 0,
+            telegram_chat_id: 1
+        })
+
+        return chatIds
+    }
 }

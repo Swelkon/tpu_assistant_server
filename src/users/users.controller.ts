@@ -29,18 +29,16 @@ export class UsersController{
     }
 
 
-    // @UseGuards(AuthGuard('local'))
-    // @Post('telegram')
-    // async getTelegramChatIds (@Request() req){
-    //     const user = req.user
-    //     if (user){
-    //         const response = await this.usersService.getTelegramChatIds()
-    //         console.log("EndPoint: telegram\nServerResponse:", response)
-    //         return response
-    //     }
-    //     return ServerResponse.sendAuthIsNeeded()
-    // }
-
-
+    @UseGuards(AuthGuard('local'))
+    @Post('telegram')
+    async getTelegramChatIds (@Request() req){
+        const user = req.user
+        if (user){
+            const response = await this.usersService.getTelegramChatIds()
+            console.log("EndPoint: telegram\nServerResponse:", response)
+            return response
+        }
+        return ServerResponse.sendAuthIsNeeded()
+    }
 
 }

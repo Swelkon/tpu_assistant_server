@@ -8,7 +8,8 @@ export class ApiTPU {
     private httpService: HttpService;
     private CLIENT_ID = process.env.CLIENT_ID;
     private CLIENT_SECRET = process.env.CLIENT_SECRET;
-    private REDIRECT_URL = process.env.REDIRECT_URL;
+    private BASE_URL = process.env.BASE_URL;
+    private REDIRECT_URL = `${this.BASE_URL}/users/register`;
     private API_KEY = process.env.API_KEY;
 
     constructor(httpService: HttpService) {
