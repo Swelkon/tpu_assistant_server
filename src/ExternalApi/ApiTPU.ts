@@ -83,12 +83,3 @@ export class ApiTPU {
     }
 
 }
-
-
-
-// // Get user data from https://api.tpu.ru/v2/auth/user
-// const userFullObservable = await this.httpService.get(`https://api.tpu.ru/v2/users/bbc7?access_token=${access_token}&apiKey=${api_key}`);
-// const userFullResponse = await userFullObservable.toPromise()
-// const userFull = userFullResponse.data;
-//
-// console.log(userFull)

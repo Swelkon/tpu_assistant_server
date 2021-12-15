@@ -30,11 +30,4 @@ export class RaspController {
         return response
     }
 
-    // @UseGuards(AuthGuard('local'))
-    // @Post('')
-    // async getRasp(@Query('chat_id') chat_id, @Query(`access_token`) access_token){
-    //     const response = await this.raspService.getRasp(chat_id, access_token)
-    //
-    //     return response
-    // }
 }

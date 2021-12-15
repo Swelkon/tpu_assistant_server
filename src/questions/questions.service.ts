@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { CreateQuestionDto } from './dtos/create-question.dto'
 import { Question, QuestionDocument } from './schemas/question.schema'
-import {ApiFAQ} from "../TPUApi/ApiFAQ";
+import {ApiFAQ} from "../ExternalApi/ApiFAQ";
 import {HttpService} from "@nestjs/axios";
 import {ServerResponse} from "../model/ServerResponse";
 
@@ -20,6 +20,7 @@ export class QuestionsService {
         this.apiFAQ = new ApiFAQ(httpService)
     }
 
+    // TODO: Не удалять, будущая фича для пополнения базы знаний QnA
     async createQuestion(createQuestionDto: CreateQuestionDto): Promise<void> {
         const question = await this._questionModel.create(createQuestionDto)
         await question.save()

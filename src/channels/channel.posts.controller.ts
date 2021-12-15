@@ -1,8 +1,10 @@
-import {Body, Controller, Get, Post} from "@nestjs/common";
+import {Body, Controller, Get, Post, UseGuards} from "@nestjs/common";
 import {ChannelPostDto} from "./dtos/channel.post.dto";
 import {ChannelPostsService} from "./channel.posts.service";
 import {ServerResponse} from "../model/ServerResponse";
 import {ApiBody, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {AuthData} from "../model/AuthData";
+import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags('channels')
 @Controller('channels')
@@ -11,7 +13,7 @@ export class ChannelPostsController {
     constructor(private readonly channelPostsService: ChannelPostsService) {
     }
 
-    @ApiBody({type: ChannelPostDto})
+    @ApiBody({type: AuthData})
     @ApiResponse({
         status: ServerResponse.STATUS_OK,
         type: ServerResponse,
@@ -21,9 +23,10 @@ export class ChannelPostsController {
         status: ServerResponse.STATUS_SERVER_ERROR,
         description: 'Ошибка сервера'
     })
+    @UseGuards(AuthGuard('local'))
     @Post('posts')
-    async savePost(@Body() channelPostDto): Promise<ServerResponse<ChannelPostDto>> {
-        const response = await this.channelPostsService.createChannelPost(channelPostDto)
+    async savePost(@Body() channelPostDto: AuthData<ChannelPostDto>): Promise<ServerResponse<ChannelPostDto>> {
+        const response = await this.channelPostsService.createChannelPost(channelPostDto.data)
         return response
     }
 

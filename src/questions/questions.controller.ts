@@ -12,6 +12,7 @@ export class QuestionsController {
     constructor(private readonly questionsService: QuestionsService) {
     }
 
+    // TODO: Не удалять, будущая фича для пополнения базы знаний QnA
     // @Post('question')
     // async saveQuestion(@Body() createQuestionDto: CreateQuestionDto){
     //     await this.questionsService.createQuestion(createQuestionDto)

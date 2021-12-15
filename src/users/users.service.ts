@@ -1,20 +1,20 @@
 import {Injectable} from "@nestjs/common";
 import {HttpService} from "@nestjs/axios";
 import {ServerResponse} from "../model/ServerResponse";
-import {ApiTPU} from "../TPUApi/ApiTPU";
+import {ApiTPU} from "../ExternalApi/ApiTPU";
 import {UsersRepository} from "./users.repository";
 import {generate} from "rand-token";
-import {Schema} from "mongoose";
 
 require('dotenv/config')
 
 @Injectable()
 export class UsersService {
     private apiTPU: ApiTPU
+    private BOT_USERNAME = process.env.BOT_USERNAME
 
     constructor(
-                private usersRepository: UsersRepository,
-                private httpService: HttpService) {
+        private usersRepository: UsersRepository,
+        private httpService: HttpService) {
         this.apiTPU = new ApiTPU(httpService);
     }
 
@@ -55,9 +55,9 @@ export class UsersService {
         }
 
         if (response !== null && response.status == ServerResponse.STATUS_OK) {
-            res.redirect(`https://t.me/tpu_assistant_bot?start=${telegram_token}`)
+            res.redirect(`https://t.me/${this.BOT_USERNAME}?start=${telegram_token}`)
         } else {
-            res.redirect(`https://t.me/tpu_assistant_bot?start=fail`)
+            res.redirect(`https://t.me/${this.BOT_USERNAME}?start=fail`)
         }
         return response
 
@@ -77,10 +77,10 @@ export class UsersService {
     }
 
     async getTelegramChatIds() {
-        try{
+        try {
             const chatIds = await this.usersRepository.getTelegramChatIds()
 
-            if (chatIds){
+            if (chatIds) {
                 return ServerResponse.sendTelegramIds(chatIds)
             }
 
@@ -95,11 +95,11 @@ export class UsersService {
         return await this.usersRepository.findUserByChatId(telegram_chat_id)
     }
 
-    async getTpuTokens(user_id){
+    async getTpuTokens(user_id) {
         return await this.usersRepository.findTpuTokens(user_id)
     }
 
-    async updateTpuTokens(user_id, access_token, refresh_token){
+    async updateTpuTokens(user_id, access_token, refresh_token) {
         return await this.usersRepository.updateTpuTokens(user_id, access_token, refresh_token)
     }
 }

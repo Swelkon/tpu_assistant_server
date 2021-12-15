@@ -1,5 +1,5 @@
 import {Inject, Injectable} from "@nestjs/common";
-import {ApiTPU} from "../TPUApi/ApiTPU";
+import {ApiTPU} from "../ExternalApi/ApiTPU";
 import {HttpService} from "@nestjs/axios";
 import {ServerResponse} from "../model/ServerResponse";
 import {UsersService} from "../users/users.service";
@@ -27,7 +27,6 @@ export class RaspService {
         } = await this.apiTpu.getTimetableTPU(tokens.access_token, tokens.refresh_token)
 
         if (!timetable) {
-            // return ServerResponse.sendRaspFail()
             return ServerResponse.sendAuthIsNeeded()
         }
 
@@ -60,40 +59,5 @@ export class RaspService {
         return response
 
     }
-
-    // async getRasp(chat_id: number, access_token: string) {
-    //
-    //     const tokens = this.usersService.getTpuTokens(user_id)
-    //
-    //     const timetable = await this.apiTpu.getTimetableTPU(access_token)
-    //
-    //     if (!timetable || timetable.code !== 200){
-    //         return ServerResponse.sendRaspFail()
-    //     }
-    //
-    //     const lessons = []
-    //
-    //     if (timetable.code === 200){
-    //         for (let key in timetable){
-    //             if (key !== "code"){
-    //                 const lesson = {
-    //                     "start": timetable[key]["start"],
-    //                     "end": timetable[key]["end"],
-    //                     "tip": timetable[key]["tip"], // другие варианты: "Практика","Лекция"
-    //                     "place": timetable[key]["place"], // корпус и аудитория пары (пример в самом низу, где не null)
-    //                     "event": timetable[key]["event"],
-    //                     "disciplina": timetable[key]["disciplina"][0],
-    //                     "lichnost": timetable[key]["lichnost"]
-    //                 }
-    //                 lessons.push(lesson)
-    //             }
-    //         }
-    //
-    //     }
-    //
-    //     const response = ServerResponse.sendRaspSuccess(lessons)
-    //     return response
-    //
-    // }
 
 }

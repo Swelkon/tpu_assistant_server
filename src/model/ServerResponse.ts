@@ -7,7 +7,6 @@ export class ServerResponse<T>{
     static STATUS_PARAMS_NOT_GIVEN = 400
     static STATUS_USER_NOT_FOUND = 404
     static STATUS_AUTH_NEEDED = 401
-    static STATUS_RASP_NOT_FOUND = 404
     static STATUS_SERVER_ERROR = 500
     @ApiProperty({ type: Number, description: 'Статус'})
     public status: number
