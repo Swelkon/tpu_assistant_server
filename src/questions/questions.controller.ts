@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post} from '@nestjs/common'
+import {Body, Controller, Post} from '@nestjs/common'
 import {CreateQuestionDto} from "./dtos/create-question.dto";
 import {QuestionsService} from "./questions.service";
 
