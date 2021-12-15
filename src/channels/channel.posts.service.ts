@@ -5,18 +5,15 @@ import {ServerResponse} from "../model/ServerResponse";
 
 
 @Injectable()
-export class ChannelPostsService{
+export class ChannelPostsService {
 
-    constructor(private channelPostsRepository: ChannelPostsRepository) {}
+    constructor(private channelPostsRepository: ChannelPostsRepository) {
+    }
 
 
     async createChannelPost(channelPostDto: ChannelPostDto) {
-        console.log("ChannelPostsService")
-        if (!channelPostDto){
-            return ServerResponse.sendBodyNotProvided()
-        }
-        
-        try{
+
+        try {
             const savedPost = await this.channelPostsRepository.createChannelPost(channelPostDto)
             if (savedPost) {
                 const savedPostDto = new ChannelPostDto(savedPost.from_chat_id, savedPost.message_id, savedPost.date, savedPost.is_poll)
@@ -25,7 +22,7 @@ export class ChannelPostsService{
                 return ServerResponse.sendPostFailed()
             }
 
-        }catch (e) {
+        } catch (e) {
             console.log(e)
             return ServerResponse.sendServerError(e)
         }
@@ -33,13 +30,20 @@ export class ChannelPostsService{
     }
 
     async getChannelPosts() {
-        const retrievedPosts = await this.channelPostsRepository.getChannelPosts()
-        const freshPosts = retrievedPosts.filter(this.publishedThisWeek)
-        return ServerResponse.sendPostsRetrieved(freshPosts)
+        try {
+
+            const retrievedPosts = await this.channelPostsRepository.getChannelPosts()
+            const freshPosts = retrievedPosts.filter(this.publishedThisWeek)
+            return ServerResponse.sendPostsRetrieved(freshPosts)
+        } catch (e) {
+            console.log(e)
+            return ServerResponse.sendServerError(e)
+
+        }
     }
 
 
-    publishedThisWeek(post, index, array){
+    publishedThisWeek(post) {
         const dateWeekAgo = Math.round(new Date().getTime() / 1000) - 604800
         return post.date > dateWeekAgo
     }

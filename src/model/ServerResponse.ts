@@ -1,20 +1,30 @@
 import {User} from "../users/schemas/users.model";
 import {ChannelPostDto} from "../channels/dtos/channel.post.dto";
-
+import {ApiProperty} from "@nestjs/swagger";
 
 export class ServerResponse<T>{
-    static STATUS_OK = 0
-    static STATUS_PARAMS_NOT_GIVEN = 1
-    static STATUS_USER_NOT_FOUND = 2
+    static STATUS_OK = 200
+    static STATUS_PARAMS_NOT_GIVEN = 400
+    static STATUS_USER_NOT_FOUND = 404
     static STATUS_AUTH_NEEDED = 401
-    static STATUS_RASP_NOT_FOUND = 3
-    static STATUS_SERVER_ERROR = 10
+    static STATUS_RASP_NOT_FOUND = 404
+    static STATUS_SERVER_ERROR = 500
+    @ApiProperty({ type: Number, description: 'Статус'})
+    public status: number
+    @ApiProperty({ type: String, description: 'Сообщение'})
+    public message: string
+    @ApiProperty({ type: Object, description: 'Данные'})
+    public data: any
 
     constructor(
-        public status: number,
-        public message: string,
-        public data: any
-    ){ }
+        status: number,
+        message: string,
+        data: any
+    ){
+        this.status = status
+        this.message = message
+        this.data = data
+    }
 
 
     public static sendSuccessfulRegistration(){
@@ -37,9 +47,6 @@ export class ServerResponse<T>{
         return new ServerResponse(ServerResponse.STATUS_USER_NOT_FOUND, "User doesn't exist", null)
     }
 
-    public static sendUserNotFromTPU(){
-        return new ServerResponse(ServerResponse.STATUS_USER_NOT_FOUND, "User is not from TPU", null)
-    }
 
     public static sendAuthIsNeeded(){
         return new ServerResponse(ServerResponse.STATUS_AUTH_NEEDED, "Unauthorized via TPU", null)
@@ -47,14 +54,6 @@ export class ServerResponse<T>{
 
     public static sendServerError(e){
         return new ServerResponse(ServerResponse.STATUS_SERVER_ERROR, `Server error occurred\n${e}`, null)
-    }
-
-    public static sendTestResponse(msg){
-        return new ServerResponse(ServerResponse.STATUS_OK, msg.toString(), null)
-    }
-
-    public static sendBodyNotProvided(){
-        return new ServerResponse(ServerResponse.STATUS_PARAMS_NOT_GIVEN, "Body is not provided", null)
     }
 
     public static sendPostCreated(post: ChannelPostDto){
@@ -69,23 +68,16 @@ export class ServerResponse<T>{
         return new ServerResponse(ServerResponse.STATUS_OK, "Posts have been retrieved", testPosts)
     }
 
-    public static sendPollsRetrieved(polls){
-        return new ServerResponse(ServerResponse.STATUS_OK, "Polls have been retrieved", polls)
-    }
-
     public static sendRaspSuccess(lessons){
         return new ServerResponse(ServerResponse.STATUS_OK, "Retrieved timetable", lessons)
     }
 
-    public static sendRaspFail(){
-        return new ServerResponse(ServerResponse.STATUS_RASP_NOT_FOUND, "Could not retrieve timetable ", null)
-    }
 
     public static sendTelegramIds(telegramChatIds){
         return new ServerResponse(ServerResponse.STATUS_OK, "Telegram chat ids retrieved successfully", telegramChatIds)
     }
     public static sendCouldNotRetrieveTelegramIds(){
-        return new ServerResponse(ServerResponse.STATUS_OK, "Telegram chat ids not retrieved", null)
+        return new ServerResponse(ServerResponse.STATUS_SERVER_ERROR, "Telegram chat ids not retrieved", null)
     }
 
     static sendServerFail() {
