@@ -74,7 +74,7 @@ export class ServerResponse<T>{
     }
 
     public static sendRaspSuccess(lessons){
-        return new ServerResponse(ServerResponse.STATUS_OK, "Retrieved tiimetable", lessons)
+        return new ServerResponse(ServerResponse.STATUS_OK, "Retrieved timetable", lessons)
     }
 
     public static sendRaspFail(){
@@ -86,5 +86,13 @@ export class ServerResponse<T>{
     }
     public static sendCouldNotRetrieveTelegramIds(){
         return new ServerResponse(ServerResponse.STATUS_OK, "Telegram chat ids not retrieved", null)
+    }
+
+    static sendServerFail() {
+        return new ServerResponse(ServerResponse.STATUS_SERVER_ERROR, "Failed to retrieve answer", null);
+    }
+
+    static sendFAQAnswer(answer) {
+        return new ServerResponse(ServerResponse.STATUS_OK, "Answer retrieved successfully", answer);
     }
 }
