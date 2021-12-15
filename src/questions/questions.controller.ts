@@ -13,6 +13,7 @@ export class QuestionsController {
     //     await this.questionsService.createQuestion(createQuestionDto)
     // }
 
+
     @Post('faq')
     async getFAQ(@Body('question') question: string){
         return await this.questionsService.getFAQ(question);
