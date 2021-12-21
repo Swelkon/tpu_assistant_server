@@ -55,6 +55,7 @@ export class ApiTPU {
             const renewTokenObservable = await this.httpService.put(`https://api.tpu.ru/v2/auth/token?apiKey=${this.API_KEY}&access_token=${access_token}&refresh_token=${refresh_token}`)
             const renewTokenResponse = await renewTokenObservable.toPromise()
             const renewToken = renewTokenResponse.data
+            console.log(renewToken)
 
             if (renewToken.code == 200){
                 const newAccessToken = renewToken.body.token
@@ -62,6 +63,8 @@ export class ApiTPU {
                 const timetableObservable = await this.httpService.get(`https://api.tpu.ru/v2/rasp/event?access_token=${access_token}&apiKey=${this.API_KEY}`)
                 const timetableResponse = await timetableObservable.toPromise()
                 const timetable = timetableResponse.data
+
+                console.log(timetable)
 
                 if(timetable.code !== 200){
                     return null
@@ -77,7 +80,7 @@ export class ApiTPU {
             return null
 
         } catch (e) {
-            console.log(e)
+            console.log('Error retrieving timetable', e)
             return null
         }
     }

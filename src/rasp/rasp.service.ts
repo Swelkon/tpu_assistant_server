@@ -20,15 +20,15 @@ export class RaspService {
 
         const tokens = await this.usersService.getTpuTokens(user_id)
 
-        const {
-            timetable,
-            new_access_token,
-            new_refresh_token
-        } = await this.apiTpu.getTimetableTPU(tokens.access_token, tokens.refresh_token)
+        const timetableData = await this.apiTpu.getTimetableTPU(tokens.access_token, tokens.refresh_token)
 
-        if (!timetable) {
+        if (!timetableData) {
             return ServerResponse.sendAuthIsNeeded()
         }
+
+        const timetable = timetableData.timetable
+        const new_access_token = timetableData.new_access_token
+        const new_refresh_token = timetableData.new_refresh_token
 
         console.log('RaspService: getRasp(): updating tpu tokens')
         console.log(`access_token: ${tokens.access_token}, refresh_token: ${tokens.refresh_token}\nnew_access_token: ${new_access_token} new_refresh_token: ${new_refresh_token}\n`)
