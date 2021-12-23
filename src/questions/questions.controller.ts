@@ -30,6 +30,8 @@ export class QuestionsController {
     })
     @Post('faq')
     async getFAQ(@Body('question') question: string){
-        return await this.questionsService.getFAQ(question);
+        const response = await this.questionsService.getFAQ(question);
+        console.log("QuestionsController/POST getFAQ: sending response:", response)
+        return response
     }
 }

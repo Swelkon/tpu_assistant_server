@@ -2,7 +2,7 @@ import {Controller, Get, Param, Post, Query, Req, Request, Res, UseGuards} from 
 import {UsersService} from "./users.service";
 import {ServerResponse} from "../model/ServerResponse";
 import {AuthGuard} from "@nestjs/passport";
-import {ApiBody, ApiCreatedResponse, ApiQuery, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBody, ApiQuery, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthData} from "../model/AuthData";
 
 @ApiTags('users')
@@ -12,7 +12,6 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {
     }
 
-    @Get('register')
     @ApiResponse({
         status: ServerResponse.STATUS_OK,
         type: ServerResponse,
@@ -43,9 +42,10 @@ export class UsersController {
             required: true
         }
     )
+    @Get('register')
     async register(@Query('code') code, @Query('state') state, @Res() res): Promise<ServerResponse<any>> {
         const response = await this.usersService.registerUser(code, state, res)
-        console.log("EndPoint: register\nServerResponse:", response)
+        console.log("UsersController/GET register: sending response:", response)
         return response
     }
 
@@ -67,9 +67,17 @@ export class UsersController {
     @Post('authorize')
     async authorize(@Request() req): Promise<any> {
         const response = await this.usersService.authorizeUser(req.user._id)
-        console.log("EndPoint: authorize\nServerResponse:", response)
+        console.log("UsersController/POST authorize: sending response:", response)
         return response
 
+    }
+
+    @UseGuards(AuthGuard('local'))
+    @Post('studentInfo')
+    async getStudentInfo(@Request() req) {
+        const response = await this.usersService.getStudentInfo(req.user._id)
+        console.log("UsersController/POST getStudentInfo: sending response", response)
+        return response
     }
 
 
@@ -91,7 +99,7 @@ export class UsersController {
     @Post('telegram')
     async getTelegramChatIds(@Request() req) {
         const response = await this.usersService.getTelegramChatIds()
-        console.log("EndPoint: telegram\nServerResponse:", response)
+        console.log("UsersController/POST telegram: sending response:", response)
         return response
 
     }

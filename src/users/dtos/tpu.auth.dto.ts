@@ -1,4 +1,4 @@
-export class GetUserAuthTpuDto {
+export class TpuAuthDto {
     user_id: number
     lichnost_id: number
     lichnost: Lichnost
@@ -11,3 +11,4 @@ export class Lichnost{
     imya: string
     familiya: string
 }
+

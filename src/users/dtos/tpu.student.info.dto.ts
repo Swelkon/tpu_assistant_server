@@ -1,10 +1,10 @@
-export class GetUserInfoTpuDto {
-    "studies": Array<UserInfoTpu>
+export class TpuStudentInfoDto {
+    "studies": Array<StudentInfoTpu>
     "message": string
     "code": number
 }
 
-export class UserInfoTpu {
+export class StudentInfoTpu {
     gruppa: string
     gradebook_number: string
     department: string

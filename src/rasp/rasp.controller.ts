@@ -27,6 +27,7 @@ export class RaspController {
     @Post('')
     async getRasp(@Request() req){
         const response = await this.raspService.getRasp(req.user._id)
+        console.log("RaspController/POST getRasp: sending response:", response)
         return response
     }
 

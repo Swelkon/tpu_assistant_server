@@ -7,6 +7,7 @@ export class ServerResponse<T>{
     static STATUS_PARAMS_NOT_GIVEN = 400
     static STATUS_USER_NOT_FOUND = 404
     static STATUS_AUTH_NEEDED = 401
+    static STATUS_FORBIDDEN = 403
     static STATUS_SERVER_ERROR = 500
     @ApiProperty({ type: Number, description: 'Статус'})
     public status: number
@@ -85,5 +86,13 @@ export class ServerResponse<T>{
 
     static sendFAQAnswer(answer) {
         return new ServerResponse(ServerResponse.STATUS_OK, "Answer retrieved successfully", answer);
+    }
+
+    static sendStudentInfo(studentInfo) {
+        return new ServerResponse(ServerResponse.STATUS_OK, "Student info retrieved successfully", studentInfo)
+    }
+
+    static sendUserNotStudent() {
+        return new ServerResponse(ServerResponse.STATUS_FORBIDDEN, "User is not a student", null);
     }
 }

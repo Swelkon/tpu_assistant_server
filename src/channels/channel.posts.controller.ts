@@ -26,7 +26,8 @@ export class ChannelPostsController {
     @UseGuards(AuthGuard('local'))
     @Post('posts')
     async savePost(@Body() channelPostDto: AuthData<ChannelPostDto>): Promise<ServerResponse<ChannelPostDto>> {
-        const response = await this.channelPostsService.createChannelPost(channelPostDto.data)
+        const response = await this.channelPostsService.saveChannelPost(channelPostDto.data)
+        console.log("ChannelPostsController/POST savePost: sending server response", response)
         return response
     }
 
@@ -42,6 +43,7 @@ export class ChannelPostsController {
     @Get('posts')
     async getFreshPosts(){
         const response = await this.channelPostsService.getChannelPosts()
+        console.log("ChannelPostsController/GET getFreshPosts: sending server response", response)
         return response
     }
 

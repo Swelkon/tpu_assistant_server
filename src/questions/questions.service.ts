@@ -26,13 +26,21 @@ export class QuestionsService {
         await question.save()
     }
 
+    // Метод для получения ответа на вопрос с QnAMaker
     async getFAQ(question: string) {
 
         const answer = await this.apiFAQ.getAnswerFAQ(question)
+        console.log("QuestionsService/getFAQ: retrieved answer:", answer)
 
         if (!answer){
             return ServerResponse.sendServerFail()
         }
+
+        const answerText = answer.answers[0].answer.toString();
+        if (answerText === 'No good match found in KB.'){
+            // TODO: Сохранить вопрос в гугл таблице
+        }
+
         return ServerResponse.sendFAQAnswer(answer);
     }
 }

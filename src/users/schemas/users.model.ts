@@ -24,19 +24,7 @@ export class User {
     telegram_chat_id: number;
 
     @Prop({required: true})
-    gruppa: string;
-
-    @Prop({required: true})
-    department: string;
-
-    @Prop({required: true})
-    direction_of_training: string;
-
-    @Prop({required: true})
-    form_of_education: string;
-
-    @Prop({required: true})
-    type_of_financing: string;
+    is_student: boolean;
 
     // tpu access_taken
     @Prop({required: true})
