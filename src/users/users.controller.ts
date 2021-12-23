@@ -72,6 +72,20 @@ export class UsersController {
 
     }
 
+    @ApiBody({type: AuthData})
+    @ApiResponse({
+        status: ServerResponse.STATUS_OK,
+        type: ServerResponse,
+        description: 'Успех. Получение дополнительной информации о студенте'
+    })
+    @ApiResponse({
+        status: ServerResponse.STATUS_FORBIDDEN,
+        description: 'Роль пользователя не студент'
+    })
+    @ApiResponse({
+        status: ServerResponse.STATUS_SERVER_ERROR,
+        description: 'Ошибка сервера'
+    })
     @UseGuards(AuthGuard('local'))
     @Post('studentInfo')
     async getStudentInfo(@Request() req) {
