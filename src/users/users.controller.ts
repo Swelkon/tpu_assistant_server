@@ -2,7 +2,7 @@ import {Controller, Get, Param, Post, Query, Req, Request, Res, UseGuards} from 
 import {UsersService} from "./users.service";
 import {ServerResponse} from "../model/ServerResponse";
 import {AuthGuard} from "@nestjs/passport";
-import {ApiBody, ApiQuery, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthData} from "../model/AuthData";
 
 @ApiTags('users')
@@ -12,6 +12,10 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {
     }
 
+    @ApiOperation({
+        summary: "Регистрация пользователей",
+        description: "Позволяет связать Телеграм-аккаунт и корпоративный аккаунт пользователя ТПУ"
+    })
     @ApiResponse({
         status: ServerResponse.STATUS_OK,
         type: ServerResponse,
@@ -49,6 +53,10 @@ export class UsersController {
         return response
     }
 
+    @ApiOperation({
+        summary: "Авторизация пользователя через чат-бота",
+        description: "Позволяет получить базовую информацию о пользователе: фамилия, имя и email"
+    })
     @ApiBody({type: AuthData})
     @ApiResponse({
         status: ServerResponse.STATUS_OK,
@@ -72,6 +80,10 @@ export class UsersController {
 
     }
 
+    @ApiOperation({
+        summary: "Получение дополнительной информации о студенте",
+        description: "Позволяет получить дополнительную информацию об авторизованном студенте"
+    })
     @ApiBody({type: AuthData})
     @ApiResponse({
         status: ServerResponse.STATUS_OK,
@@ -94,7 +106,10 @@ export class UsersController {
         return response
     }
 
-
+    @ApiOperation({
+        summary: "Получение telegram_chat_id сохраненных пользователей",
+        description: "Позволяет получить telegram_chat_id всех сохраненных пользователей"
+    })
     @ApiBody({type: AuthData})
     @ApiResponse({
         status: ServerResponse.STATUS_OK,

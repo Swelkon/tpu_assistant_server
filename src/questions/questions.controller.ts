@@ -1,7 +1,7 @@
 import {Body, Controller, Post} from '@nestjs/common'
 import {CreateQuestionDto} from "./dtos/create-question.dto";
 import {QuestionsService} from "./questions.service";
-import {ApiBody, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBody, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {FaqQuestionDto} from "./dtos/faq.question.dto";
 import {ServerResponse} from "../model/ServerResponse";
 
@@ -18,6 +18,10 @@ export class QuestionsController {
     //     await this.questionsService.createQuestion(createQuestionDto)
     // }
 
+    @ApiOperation({
+        summary: "Получение ответа на вопрос",
+        description: "Позволяет получить ответ на заданный вопрос из базы знаний QnAMaker"
+    })
     @ApiBody({type: FaqQuestionDto})
     @ApiResponse({
         status: ServerResponse.STATUS_OK,

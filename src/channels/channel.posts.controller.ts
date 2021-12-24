@@ -2,7 +2,7 @@ import {Body, Controller, Get, Post, UseGuards} from "@nestjs/common";
 import {ChannelPostDto} from "./dtos/channel.post.dto";
 import {ChannelPostsService} from "./channel.posts.service";
 import {ServerResponse} from "../model/ServerResponse";
-import {ApiBody, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBody, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthData} from "../model/AuthData";
 import {AuthGuard} from "@nestjs/passport";
 
@@ -13,6 +13,10 @@ export class ChannelPostsController {
     constructor(private readonly channelPostsService: ChannelPostsService) {
     }
 
+    @ApiOperation({
+        summary: "Сохранение поста в базе данных",
+        description: "Позволяет сохранить пост (новость, голосование) в базе данных"
+    })
     @ApiBody({type: AuthData})
     @ApiResponse({
         status: ServerResponse.STATUS_OK,
@@ -31,6 +35,10 @@ export class ChannelPostsController {
         return response
     }
 
+    @ApiOperation({
+        summary: "Получение постов из базы банных",
+        description: "Позволяет получить данные сообщений-постов из базы данных"
+    })
     @ApiResponse({
         status: ServerResponse.STATUS_OK,
         type: ServerResponse,

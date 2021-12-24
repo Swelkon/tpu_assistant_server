@@ -1,7 +1,7 @@
 import {Controller, Get, Post, Query, Request, UseGuards} from "@nestjs/common";
 import {RaspService} from "./rasp.service";
 import {AuthGuard} from "@nestjs/passport";
-import {ApiBody, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBody, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthData} from "../model/AuthData";
 import {ServerResponse} from "../model/ServerResponse";
 
@@ -13,6 +13,10 @@ export class RaspController {
         private readonly raspService: RaspService
     ) {}
 
+    @ApiOperation({
+        summary: "Получение расписания пользователя",
+        description: "Позволяет получить расписание пользователя на текущую неделю"
+    })
     @ApiBody({type: AuthData})
     @ApiResponse({
         status: ServerResponse.STATUS_OK,
