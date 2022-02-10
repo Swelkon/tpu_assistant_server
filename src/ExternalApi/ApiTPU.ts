@@ -40,8 +40,8 @@ export class ApiTPU {
             const authData: TpuAuthDto = authDataResponse.data;
             console.log("ApiTPU/getUserTpu: tpu user basic info response:", authData)
 
-            // Получение информации о роли пользователя (студент, сотрудник) с https://api.tpu.ru/v2/lichnost/type
-            const roleDataObservable = await this.httpService.get(`https://api.tpu.ru/v2/lichnost/type?access_token=${access_token}&apiKey=${this.API_KEY}`)
+            // Получение информации о роли пользователя (студент, сотрудник) с https://api.tpu.ru/v2/lichnost/role
+            const roleDataObservable = await this.httpService.get(`https://api.tpu.ru/v2/lichnost/role?access_token=${access_token}&apiKey=${this.API_KEY}`)
             const roleDataResponse = await roleDataObservable.toPromise()
             const roleData: TpuRoleDto = roleDataResponse.data
             console.log("ApiTPU/getUserTpu: role response:", roleData)
@@ -136,7 +136,7 @@ export class ApiTPU {
     private async getTokenTpu(access_token: string, refresh_token: string): Promise<TpuUserTokensDto> {
         try {
             // Проверка валидности токена с https://api.tpu.ru/v2/auth/token
-            const checkTokenObservable = await this.httpService.get(`https://api.tpu.ru/v2/auth/token??apiKey=${this.API_KEY}&access_token=${access_token}`)
+            const checkTokenObservable = await this.httpService.get(`https://api.tpu.ru/v2/auth/token?apiKey=${this.API_KEY}&access_token=${access_token}`)
             const checkTokenResponse = await checkTokenObservable.toPromise()
             const checkToken = checkTokenResponse.data
             console.log("ApiTPU/getTokenTpu: checkToken response:", checkToken)
